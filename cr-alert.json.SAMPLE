@@ -1,0 +1,242 @@
+{
+  "W7FKI": {
+    "grid": "EM85",
+    "msg": "R2FBW W7FKI EM85",
+    "RSTsent": -16,
+    "RSTrecv": "-",
+    "time": 1595451000,
+    "age": 1595451014,
+    "life": 1595451014,
+    "delta": 1847,
+    "dt": "0.10",
+    "DXcall": "R2FBW",
+    "state": "US-TN",
+    "zipcode": "37777",
+    "dxcc": "291",
+    "wpx": "W7",
+    "ituza": [
+      "08"
+    ],
+    "cqza": [
+      "04",
+      "05"
+    ],
+    "distance": 2177,
+    "heading": 81.85757084291882,
+    "alerted": true,
+    "shouldAlert": true,
+    "mode": "FT8",
+    "band": "20m",
+    "qrz": false,
+    "reset": false,
+    "cnty": "TN,BLOUNT",
+    "reason": [
+      "grid"
+    ],
+    "dxccName": "United States"
+  },
+  "AC6MM": {
+    "grid": "CM87",
+    "msg": "JH1QAX AC6MM CM87      ",
+    "RSTsent": -9,
+    "RSTrecv": "-",
+    "time": 1595451030,
+    "age": 1595451044,
+    "life": 1595450774,
+    "delta": 1958,
+    "dt": "1.10",
+    "DXcall": "JH1QAX",
+    "state": "US-CA",
+    "zipcode": "94555",
+    "dxcc": "291",
+    "wpx": "AC6",
+    "ituza": [
+      "06"
+    ],
+    "cqza": [
+      "03"
+    ],
+    "distance": 35,
+    "heading": 237.8979795914986,
+    "alerted": false,
+    "shouldAlert": false,
+    "mode": "FT8",
+    "band": "20m",
+    "qrz": false,
+    "reset": false,
+    "cnty": "CA,ALAMEDA",
+    "reason": [],
+    "dxccName": "United States"
+  },
+  "W0QU": {
+    "grid": "EM48",
+    "msg": "CQ W0QU EM48           ",
+    "RSTsent": -21,
+    "RSTrecv": "-",
+    "time": 1595450940,
+    "age": 1595450954,
+    "life": 1595450954,
+    "delta": 1059,
+    "dt": "0.20",
+    "DXcall": "CQ",
+    "state": "US-MO",
+    "zipcode": "63050",
+    "dxcc": "291",
+    "wpx": "W0",
+    "ituza": [
+      "07"
+    ],
+    "cqza": [
+      "04"
+    ],
+    "distance": 1702,
+    "heading": 78.48843772346683,
+    "alerted": false,
+    "shouldAlert": false,
+    "mode": "FT8",
+    "band": "20m",
+    "qrz": false,
+    "reset": false,
+    "cnty": "MO,JEFFERSON",
+    "reason": [],
+    "dxccName": "United States"
+  },
+  "K5VPQ": {
+    "grid": "EM12",
+    "msg": "AG4EX K5VPQ EM12",
+    "RSTsent": -13,
+    "RSTrecv": "-",
+    "time": 1595450940,
+    "age": 1595450954,
+    "life": 1595450866,
+    "delta": 2059,
+    "dt": "0.10",
+    "DXcall": "AG4EX",
+    "state": "US-TX",
+    "zipcode": "76137",
+    "dxcc": "291",
+    "wpx": "K5",
+    "ituza": [
+      "07"
+    ],
+    "cqza": [
+      "04"
+    ],
+    "distance": 1478,
+    "heading": 96.561924950992,
+    "alerted": false,
+    "shouldAlert": false,
+    "mode": "FT8",
+    "band": "20m",
+    "qrz": false,
+    "reset": false,
+    "cnty": "TX,TARRANT",
+    "reason": [],
+    "dxccName": "United States"
+  },
+  "K2QQ": {
+    "grid": "FN03",
+    "msg": "A45XR K2QQ FN03",
+    "RSTsent": -18,
+    "RSTrecv": "-",
+    "time": 1595450910,
+    "age": 1595450924,
+    "life": 1595450835,
+    "delta": 448,
+    "dt": "0.20",
+    "DXcall": "A45XR",
+    "state": "US-NY",
+    "zipcode": "14068",
+    "dxcc": "291",
+    "wpx": "K2",
+    "ituza": [
+      "04",
+      "08"
+    ],
+    "cqza": [
+      "04",
+      "05"
+    ],
+    "distance": 2286,
+    "heading": 66.04985782324293,
+    "alerted": true,
+    "shouldAlert": true,
+    "mode": "FT8",
+    "band": "20m",
+    "qrz": false,
+    "reset": false,
+    "cnty": "NY,ERIE",
+    "reason": [
+      "grid"
+    ],
+    "dxccName": "United States"
+  },
+  "AG7SB": {
+    "grid": "CN84",
+    "msg": "K6PST AG7SB CN84",
+    "RSTsent": -14,
+    "RSTrecv": "-",
+    "time": 1595451090,
+    "age": 1595451105,
+    "life": 1595451105,
+    "delta": 1028,
+    "dt": "0.10",
+    "DXcall": "K6PST",
+    "state": "US-OR",
+    "zipcode": "97405",
+    "dxcc": "291",
+    "wpx": "AG7",
+    "ituza": [
+      "06"
+    ],
+    "cqza": [
+      "03"
+    ],
+    "distance": 465,
+    "heading": 356.7071114127761,
+    "alerted": false,
+    "shouldAlert": true,
+    "mode": "FT8",
+    "band": "20m",
+    "qrz": true,
+    "reset": false,
+    "cnty": "OR,LANE",
+    "reason": [
+      "qrz"
+    ],
+    "dxccName": "United States"
+  },
+  "W1FOX": {
+    "grid": "EM13",
+    "msg": "CQ W1FOX EM13",
+    "RSTsent": -16,
+    "RSTrecv": "-",
+    "time": 1595451090,
+    "age": 1595451104,
+    "life": 1595451104,
+    "delta": 1318,
+    "dt": "0.10",
+    "DXcall": "CQ",
+    "state": "US-TX",
+    "zipcode": "75035",
+    "dxcc": "291",
+    "wpx": "W1",
+    "ituza": [
+      "07"
+    ],
+    "cqza": [
+      "04"
+    ],
+    "distance": 1454,
+    "heading": 93.96980724984726,
+    "alerted": false,
+    "shouldAlert": false,
+    "mode": "FT8",
+    "band": "20m",
+    "qrz": false,
+    "reset": false,
+    "cnty": "TX,COLLIN",
+    "reason": [],
+    "dxccName": "United States"
+  }
+}
