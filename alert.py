@@ -151,6 +151,14 @@ def main():
     })
     alert(alert_wpx, 'Wanted', 'prefix')
 
+    # look for prefixes we would like
+    alert_wpx = sorted({
+        entry['itu']
+        for callsign, entry in crdata.items()
+        if 'itu' in entry['reason']
+    })
+    alert(alert_wpx, 'Wanted', 'I-T-U')
+
 
 
 if __name__ == "__main__":
