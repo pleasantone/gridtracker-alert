@@ -78,20 +78,18 @@ def alert(entries, preamble, name):
         name     : type of message (grid is special-cased)
     """
     if entries:
-        if len(entries) > 1:
-            name = pl.plural(name)
-
-        print('{} {} {}: {}'.format(NOW.strftime('%H:%M:%S'), preamble, name,
+        plural = pl.plural(name) if len(entries) > 1 else name
+        print('{} {} {}: {}'.format(NOW.strftime('%H:%M:%S'), preamble, plural,
                                     ', '.join(entries)))
 
         # special-case squares and prefixes so they sound like "e-m-55"
         # instead of "m-55"
-        if name in ["grid", "grids", "prefix", "prefixes"]:
+        if name in ["grid"]:
             entries = [ent[0]+"-"+ent[1:] for ent in entries]
-        elif name in ['you']:
-            entries = ['-'.join(ent) for ent in entries]
+        elif name in ["you", "prefix", "zone"]:
+            entries = ["-".join(ent) for ent in entries]
 
-        speech = '{} {}: {}'.format(preamble, name, ', '.join(entries))
+        speech = '{} {}: {}'.format(preamble, plural, ', '.join(entries))
         logging.debug('Speaking: %s', speech)
         if not args.mute:
             esng.say(speech, sync=True)
@@ -153,12 +151,19 @@ def main():
 
     # look for prefixes we would like
     alert_wpx = sorted({
-        entry['itu']
+        entry['ituza']
         for callsign, entry in crdata.items()
         if 'itu' in entry['reason']
     })
-    alert(alert_wpx, 'Wanted', 'I-T-U')
+    alert(alert_wpx, 'Wanted I-T-U', 'zone')
 
+    # look for prefixes we would like
+    alert_cqz = sorted({
+        entry['cqza']
+        for callsign, entry in crdata.items()
+        if 'cqz' in entry['reason']
+    })
+    alert(alert_cqz, 'Wanted C-Q', 'zone')
 
 
 if __name__ == "__main__":
