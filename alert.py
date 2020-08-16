@@ -22,8 +22,6 @@ import inflect
 import us
 from espeakng import ESpeakNG
 
-WANTED_STATES = ['US-RI', 'US-HI']
-
 # pylint: disable=invalid-name
 
 parser = argparse.ArgumentParser(
@@ -86,9 +84,9 @@ def alert(entries, preamble, name):
         print('{} {} {}: {}'.format(NOW.strftime('%H:%M:%S'), preamble, name,
                                     ', '.join(entries)))
 
-        # special-case grid tracker squares so they sound like "e-m-55"
+        # special-case squares and prefixes so they sound like "e-m-55"
         # instead of "m-55"
-        if name in ["grid", "grids"]:
+        if name in ["grid", "grids", "prefix", "prefixes"]:
             entries = [ent[0]+"-"+ent[1:] for ent in entries]
         elif name in ['you']:
             entries = ['-'.join(ent) for ent in entries]
@@ -106,19 +104,20 @@ def main():
     unfiltered_crdata = json.load(open(args.input))
 
     # filter out anything that isn't a "new alert"
+    # also filter out any stations that aren't active loggers
     crdata = {
         callsign:entry for (callsign, entry) in unfiltered_crdata.items()
         if entry['shouldAlert'] and not entry['alerted'] and \
             logging_active(callsign)
     }
 
-    # look for any state we don't currently have
-    alert_states = sorted({
-        str(us.states.lookup(entry['state'][3:]))
+    # alert if someone is calling me!
+    alert_qrz = sorted({
+        callsign
         for callsign, entry in crdata.items()
-        if (entry['state'] in WANTED_STATES or 'usstates' in entry['reason'])
+        if 'qrz' in entry['reason']
     })
-    alert(alert_states, 'Wanted', 'state')
+    alert(alert_qrz, 'Calling', 'you')
 
     # look for dxcc we don't have confirmed
     alert_countries = sorted({
@@ -128,21 +127,30 @@ def main():
     })
     alert(alert_countries, 'Wanted', 'country')
 
-    # look for grid-squares we are missing, but only in the US
+    # look for any state we don't currently have
+    alert_states = sorted({
+        str(us.states.lookup(entry['state'][3:]))
+        for callsign, entry in crdata.items()
+        if 'usstates' in entry['reason']
+    })
+    alert(alert_states, 'Wanted', 'state')
+
+    # look for grid-squares we are missing
     alert_grid = sorted({
         entry['grid']
         for callsign, entry in crdata.items()
-        if 'grid' in entry['reason'] and entry['dxccName'] == 'United States'
+        if 'grid' in entry['reason']
     })
     alert(alert_grid, 'Wanted', 'grid')
 
-    # finally, alert if someone is calling me!
-    alert_qrz = sorted({
-        callsign
+    # look for prefixes we would like
+    alert_wpx = sorted({
+        entry['wpx']
         for callsign, entry in crdata.items()
-        if 'qrz' in entry['reason']
+        if 'wpx' in entry['reason']
     })
-    alert(alert_qrz, 'Calling', 'you')
+    alert(alert_wpx, 'Wanted', 'prefix')
+
 
 
 if __name__ == "__main__":
