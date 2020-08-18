@@ -24,6 +24,8 @@ from espeakng import ESpeakNG
 
 # pylint: disable=invalid-name
 
+WANTED_CALLS = ["N0TTL"]
+
 parser = argparse.ArgumentParser(
     description="GridTracker Call Roster Alerts",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -40,7 +42,7 @@ args = parser.parse_args()
 logging.basicConfig(level=(logging.DEBUG if args.debug else logging.INFO))
 
 esng = ESpeakNG()
-esng.voice = 'en-us'
+esng.voice = "en-us"
 
 pl = inflect.engine()
 
@@ -70,7 +72,7 @@ def logging_active(callsign):
     return last_upload >= LOTW_CUTOFF
 
 
-def alert(entries, preamble, name):
+def alert(preamble, name, entries):
     """
     Create an alert both voice and text
         entries  : iteratable of responses
@@ -79,18 +81,18 @@ def alert(entries, preamble, name):
     """
     if entries:
         plural = pl.plural(name) if len(entries) > 1 else name
-        print('{} {} {}: {}'.format(NOW.strftime('%H:%M:%S'), preamble, plural,
-                                    ', '.join(entries)))
+        print("{} {} {}: {}".format(NOW.strftime("%H:%M:%S"), preamble, plural,
+                                    ", ".join(entries)))
 
         # special-case squares and prefixes so they sound like "e-m-55"
         # instead of "m-55"
         if name in ["grid"]:
             entries = [ent[0]+"-"+ent[1:] for ent in entries]
-        elif name in ["you", "prefix", "zone"]:
+        elif name in ["you", "call", "prefix", "zone"]:
             entries = ["-".join(ent) for ent in entries]
 
-        speech = '{} {}: {}'.format(preamble, plural, ', '.join(entries))
-        logging.debug('Speaking: %s', speech)
+        speech = "{} {}: {}".format(preamble, plural, ", ".join(entries))
+        logging.debug("Speaking: %s", speech)
         if not args.mute:
             esng.say(speech, sync=True)
 
@@ -99,71 +101,76 @@ def main():
     """
     Process GridTracker's cr-alert.json style file.
     """
-    unfiltered_crdata = json.load(open(args.input))
+    crdata = json.load(open(args.input))
 
     # filter out anything that isn't a "new alert"
     # also filter out any stations that aren't active loggers
     crdata = {
-        callsign:entry for (callsign, entry) in unfiltered_crdata.items()
-        if entry['shouldAlert'] and not entry['alerted'] and \
-            logging_active(callsign)
+        callsign:entry for (callsign, entry) in crdata.items()
+        if entry['shouldAlert'] and not entry['alerted']
     }
 
     # alert if someone is calling me!
-    alert_qrz = sorted({
+    alert("Calling", "you", sorted({
         callsign
         for callsign, entry in crdata.items()
         if 'qrz' in entry['reason']
-    })
-    alert(alert_qrz, 'Calling', 'you')
+    }))
+
+    # alert if wanted call
+    alert("Wanted", "call", sorted({
+        callsign
+        for callsign, entry in crdata.items()
+        if callsign in WANTED_CALLS
+    }))
+
+    # wipe out anything that isn't an active logger
+    crdata = {
+        callsign:entry for (callsign, entry) in crdata.items()
+        if logging_active(callsign)
+    }
 
     # look for dxcc we don't have confirmed
-    alert_countries = sorted({
+    alert("Wanted", "country", sorted({
         entry['dxccName']
         for callsign, entry in crdata.items()
         if 'dxcc' in entry['reason']
-    })
-    alert(alert_countries, 'Wanted', 'country')
+    }))
 
     # look for any state we don't currently have
-    alert_states = sorted({
+    alert("Wanted", "state", sorted({
         str(us.states.lookup(entry['state'][3:]))
         for callsign, entry in crdata.items()
         if 'usstates' in entry['reason']
-    })
-    alert(alert_states, 'Wanted', 'state')
+    }))
 
     # look for grid-squares we are missing
-    alert_grid = sorted({
+    alert("Wanted", "grid", sorted({
         entry['grid']
         for callsign, entry in crdata.items()
         if 'grid' in entry['reason']
-    })
-    alert(alert_grid, 'Wanted', 'grid')
+    }))
 
     # look for prefixes we would like
-    alert_wpx = sorted({
+    alert("Wanted", "prefix", sorted({
         entry['wpx']
         for callsign, entry in crdata.items()
         if 'wpx' in entry['reason']
-    })
-    alert(alert_wpx, 'Wanted', 'prefix')
+    }))
 
     # look for prefixes we would like
-    alert_wpx = sorted({
+    alert("Wanted I-T-U", "zone", sorted({
         entry['ituza']
         for callsign, entry in crdata.items()
         if 'itu' in entry['reason']
-    })
-    alert(alert_wpx, 'Wanted I-T-U', 'zone')
+    }))
 
     # look for prefixes we would like
-    alert_cqz = sorted({
+    alert("Wanted C-Q", "zone", sorted({
         entry['cqza']
         for callsign, entry in crdata.items()
         if 'cqz' in entry['reason']
-    })
-    alert(alert_cqz, 'Wanted C-Q', 'zone')
+    }))
 
 
 if __name__ == "__main__":
